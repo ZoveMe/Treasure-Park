@@ -1,0 +1,136 @@
+[gd_scene load_steps=24 format=3 uid="uid://c7u64tpv6byvb"]
+
+[ext_resource type="Shader" path="res://demo_terrain/shaders/wireframe.gdshader" id="1_pum5v"]
+[ext_resource type="Texture2D" uid="uid://cdx7ceoux78g0" path="res://demo_terrain/textures/yellow_grass.png" id="2_diq8e"]
+[ext_resource type="FastNoiseLite" uid="uid://cfqdbsjbv1tr3" path="res://demo_terrain/resources/hex_terrain_biomes_noise.tres" id="2_w71nt"]
+[ext_resource type="Texture2D" uid="uid://480r6dmk61dl" path="res://demo_terrain/textures/grass0.png" id="3_dt225"]
+[ext_resource type="FastNoiseLite" uid="uid://d4lduvo2g6nuv" path="res://demo_terrain/resources/hex_terrain_plain_noise.tres" id="3_rgrq2"]
+[ext_resource type="Texture2D" uid="uid://do00yjl6ipe16" path="res://demo_terrain/textures/water.png" id="4_0msuc"]
+[ext_resource type="FastNoiseLite" uid="uid://c4332g4a8o75g" path="res://demo_terrain/resources/hex_terrain_mountain_noise.tres" id="4_8apfb"]
+[ext_resource type="Texture2D" uid="uid://ba6285rpeyj4l" path="res://demo_terrain/textures/snow.png" id="5_l3sdd"]
+[ext_resource type="Shader" path="res://demo_terrain/shaders/terrain.gdshader" id="6_8c8ug"]
+[ext_resource type="FastNoiseLite" uid="uid://cgxvojmlhcxha" path="res://demo_terrain/resources/rect_terrain_biomes_noise.tres" id="7_pdqbd"]
+[ext_resource type="FastNoiseLite" uid="uid://b0o4avj71sfcj" path="res://demo_terrain/resources/rect_terrain_plain_noise.tres" id="8_tlppm"]
+[ext_resource type="FastNoiseLite" uid="uid://beit0r3ccwphn" path="res://demo_terrain/resources/rect_terrain_mountain_noise.tres" id="9_6vlvq"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_dbx8v"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_s0o1j"]
+sky_material = SubResource("ProceduralSkyMaterial_dbx8v")
+
+[sub_resource type="Environment" id="Environment_5iorj"]
+background_mode = 2
+sky = SubResource("Sky_s0o1j")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2toje"]
+render_priority = 0
+shader = ExtResource("1_pum5v")
+
+[sub_resource type="PentMesh" id="PentMesh_57ooj"]
+divisions = 3
+material = SubResource("ShaderMaterial_2toje")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_djkpx"]
+render_priority = 0
+shader = ExtResource("1_pum5v")
+
+[sub_resource type="HexMesh" id="HexMesh_i6ufk"]
+divisions = 2
+material = SubResource("ShaderMaterial_djkpx")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g7q1k"]
+render_priority = 0
+shader = ExtResource("1_pum5v")
+
+[sub_resource type="PrismHexMesh" id="PrismHexMesh_cf0jy"]
+height = 0.835
+divisions = 2
+material = SubResource("ShaderMaterial_g7q1k")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ineyc"]
+render_priority = 0
+shader = ExtResource("1_pum5v")
+
+[sub_resource type="PrismPentMesh" id="PrismPentMesh_86pmr"]
+height = 0.85
+divisions = 2
+material = SubResource("ShaderMaterial_ineyc")
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 4.27592, 9.88109, 6.05755)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.5, -1.49012e-08, -0.866025, 0.433013, 0.866025, 0.25, 0.75, -0.5, 0.433013, -2, 3, 5)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_5iorj")
+
+[node name="MeshInstance3D_pentagon_mesh_test" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.03847, 0, 5.12413)
+mesh = SubResource("PentMesh_57ooj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 5)
+mesh = SubResource("HexMesh_i6ufk")
+
+[node name="RectRidgeHexGrid" type="RectRidgeHexGrid" parent="."]
+_height = 7
+_width = 7
+_smooth_normals = true
+noise_biomes = ExtResource("7_pdqbd")
+noise_plain_hill = ExtResource("8_tlppm")
+noise_mountain_water = ExtResource("9_6vlvq")
+texture_plain = ExtResource("2_diq8e")
+texture_hill = ExtResource("3_dt225")
+texture_water = ExtResource("4_0msuc")
+texture_mountain = ExtResource("5_l3sdd")
+_divisions = 7
+_shader = ExtResource("6_8c8ug")
+
+[node name="HexagonalRidgeHexGrid" type="HexagonalRidgeHexGrid" parent="."]
+_size = 3
+_smooth_normals = true
+noise_biomes = ExtResource("2_w71nt")
+noise_plain_hill = ExtResource("3_rgrq2")
+noise_mountain_water = ExtResource("4_8apfb")
+texture_plain = ExtResource("2_diq8e")
+texture_hill = ExtResource("3_dt225")
+texture_water = ExtResource("4_0msuc")
+texture_mountain = ExtResource("5_l3sdd")
+_divisions = 7
+_shader = ExtResource("6_8c8ug")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7)
+
+[node name="RectHexGrid_minimal" type="RectHexGrid" parent="."]
+_height = 1
+width = 1
+_shader = ExtResource("1_pum5v")
+enable_frame = true
+_frame_offset = 0.545
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.76043, -9.53674e-07, 3.01861)
+
+[node name="HexagonalHexGrid" type="HexagonalHexGrid" parent="."]
+_size = 3
+_shader = ExtResource("1_pum5v")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 7)
+
+[node name="RectHexGrid" type="RectHexGrid" parent="."]
+_height = 7
+width = 7
+_shader = ExtResource("1_pum5v")
+enable_frame = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.30717, 0, 0)
+
+[node name="PrismHexMesh_instance" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.09963, 0, 6.43768)
+mesh = SubResource("PrismHexMesh_cf0jy")
+
+[node name="PrismPentMesh_instance" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.0478, 0, 6.45857)
+mesh = SubResource("PrismPentMesh_86pmr")

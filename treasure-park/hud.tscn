@@ -1,0 +1,29 @@
+[gd_scene load_steps=2 format=3 uid="uid://c2fn3n65sg4ht"]
+
+[ext_resource type="Script" path="res://hud.gd" id="1_4fe18"]
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_4fe18")
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = 1060.0
+offset_right = 1153.0
+offset_bottom = 67.0
+
+[node name="Label_Coin" type="Label" parent="."]
+offset_left = 1061.0
+offset_right = 1151.0
+offset_bottom = 43.0
+text = "Coins : 5"
+
+[node name="Time" type="Label" parent="."]
+offset_left = 1064.0
+offset_top = 42.0
+offset_right = 1153.0
+offset_bottom = 65.0
+text = "Time: 60"
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

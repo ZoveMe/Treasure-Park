@@ -1,0 +1,32 @@
+[gd_scene load_steps=7 format=3 uid="uid://bmmp3fq7iru50"]
+
+[ext_resource type="Script" path="res://coin.gd" id="1_lrrqm"]
+[ext_resource type="Texture2D" uid="uid://mdgl4v5gw3mq" path="res://coin_0.png" id="2_6olc4"]
+[ext_resource type="ArrayMesh" uid="uid://deke4e2441nmv" path="res://Gold_Coin.obj" id="3_hqh0d"]
+[ext_resource type="AudioStream" uid="uid://b8ftoyxmpltb5" path="res://coin-recieved-230517.mp3" id="4_posjj"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_36211"]
+albedo_texture = ExtResource("2_6olc4")
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_vhtes"]
+height = 1.69016
+
+[node name="Coin" type="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0102679, 0)
+script = ExtResource("1_lrrqm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -2.89731, -1.27059, -0.0198784)
+material_override = SubResource("StandardMaterial3D_36211")
+mesh = ExtResource("3_hqh0d")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.791246, 0)
+shape = SubResource("CylinderShape3D_vhtes")
+
+[node name="Coin sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_posjj")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]
+[connection signal="finished" from="Coin sound" to="." method="_on_coin_sound_finished"]
